@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title><%= JSON.stringify(htmlWebpackPlugin.options.title) %></title>
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+		<script id="vertexShader" type="x-shader/x-vertex">
+			precision mediump float;
+			precision mediump int;
+			uniform mat4 modelViewMatrix; // optional
+			uniform mat4 projectionMatrix; // optional
+			attribute vec3 position;
+			attribute vec4 color;
+			varying vec3 vPosition;
+			varying vec4 vColor;
+			void main()	{
+				vPosition = position;
+				vColor = color;
+				gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+			}
+		</script>
+
+		<script id="fragmentShader" type="x-shader/x-fragment">
+			precision mediump float;
+			precision mediump int;
+			uniform float time;
+			varying vec3 vPosition;
+			varying vec4 vColor;
+			void main()	{
+				vec4 color = vec4( vColor );
+				color.r += sin( vPosition.x * 10.0 + time ) * 0.5;
+				gl_FragColor = color;
+			}
+		</script>
+
+		<style>
+			.container {
+				position: relative;
+			}
+			body {
+				margin: 0;
+			}
+			canvas {
+				width: 100vw;
+				height: 100vh;
+				display: block;
+			}
+			#text {
+				position: absolute;
+				left: 0px;
+				top: 0px;
+				z-index: 10;
+			}
+		</style>
+
+
+	<body>
+		<h1 id="loading">Loading please be patient....</h1>
+		<div id="container" class="container">
+			<canvas id="game" width="1000" height="700"></canvas>
+			<canvas id="text" width="1000" height="700"></canvas>
+		</div>
+		<img id="boom" src="images/boom.png" hidden/>
+	</body>
+</html>
