@@ -7,7 +7,6 @@ var mainworld: World;
 import { collection, addDoc,query, orderBy, limit,getDocs } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 import { getFirestore,connectFirestoreEmulator } from "firebase/firestore";
-import {mySecretConfig} from "./secret/firebaseSecret";
 
 
 declare global {
@@ -169,6 +168,8 @@ var text=[
 	'Ich komme mit Hitze und Kälte nicht mehr so gut klar',
 	'In meinen Sprayerladen komm ich wegen einer Stufe nicht mehr rein',
 	'Aber der nette Verkäufer kommt zu mir raus',
+	'Treppen und zu enge Türen sind oft alleine nicht überwindbar',
+	'Hotelbewertungen mit Angaben zur rollstuhlgängigkeit sind sehr nützlich',
 	'Jetzt spiel mit mir, wir springen zusammen auf Züge, wie früher',
 	'Drücke die Leertaste oder tippe auf den Bildschirm :-)',
 	'Mit den vier Pfeilen auf der Tastatur kannst du mich steuern',
@@ -234,7 +235,18 @@ async function rotateText() {
 		}
 	}while(mainworld.paused)
 }
+ function loadFirebaseConfig() {
+	//TODO make your own Firebase Config:
+	return {
+		apiKey: "Your Api Key",
+		authDomain: "Your Auth Domain",
+		projectId: "Your Project Id",
+		storageBucket: "Your Storage Bucket",
+		messagingSenderId: "Your Messaging Sender Id",
+		appId: "Your App Id"
+	};
 
+}
 var main = () => {
 	rotateText();
 	const loading: Element = document.querySelector('#loading');
@@ -260,7 +272,8 @@ var main = () => {
 		}
 	});
 
-	const firebaseConfig = mySecretConfig;
+
+	const firebaseConfig =  loadFirebaseConfig();
 
 	// Initialize Firebase to handle scores
 	app = initializeApp(firebaseConfig);
@@ -418,7 +431,6 @@ function drawSpeechBubble(){
 	// Die Schriftart und -größe für den Text festlegen
 	ctx.font = "20px Arial";
 
-	// Den Text "Hallo Welt" mit schwarzer Füllung an der Position (100, 50) zeichnen
 	ctx.fillStyle = "black";
 	ctx.fillText(text[textIndex], 100, 50);
 }
@@ -475,7 +487,7 @@ function drawGamePause(){
 	}
 }
 
-function lightAndCamera(deltaTime:number){
+function drawGameWorld(deltaTime:number){
 	rotation = mainworld.player.rotation;
 	gl.useProgram(programInfo.program);
 	var LightPosition = gl.getUniformLocation(programInfo.program, "LightPosition");
@@ -516,6 +528,7 @@ function lightAndCamera(deltaTime:number){
 			/* mainworld.cameraPos.z */ + 0,
 		] /* player_coords */, up);
 	var viewMatrix = cameraMatrix;
+
 	var viewProjectionMatrix = mat4.create();
 	mat4.multiply(viewProjectionMatrix, projectionMatrix, viewMatrix);
 	modelViewMatrix = mat4.create();
@@ -536,9 +549,9 @@ function drawScene(gl: WebGLRenderingContext, programInfo: Program, buffers: Buf
 	drawExplosion();
 	drawPlayerDead();
 	drawGamePause();
-	lightAndCamera(deltaTime);
+	drawGameWorld(deltaTime);
 	// Update the rotation for the next draw
-	!mainworld.paused && mainworld.tickall();
+	!mainworld.paused && mainworld.tickall(deltaTime);
 }
 
 function left(){

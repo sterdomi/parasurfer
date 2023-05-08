@@ -138,7 +138,7 @@ export class Police {
             }
         }
     };
-    tick(data?: any){
+    tick(){
         var player = this.world.player;
         if (player.dead){
             this.distance = 10;

@@ -91,7 +91,7 @@ export class Jake{
         this.buffers = initBuffersJake(this.gl,this.object);
     }
 
-    tick(data?:any) : void {
+    tick(deltaTime:number) : void {
 
         if (this.dead) {
             this.world.police.coins=[];
@@ -102,7 +102,8 @@ export class Jake{
         };
         this.score += 10;
         this.checkCollisions();
-        this.position.x += this.speed.x;
+        //*(1+deltaTime) damit das Spiel überall gleich schnell läuft
+        this.position.x += this.speed.x*(1+deltaTime);
         this.rotation.y=0;
         this.world.cameraPos.x = (this.position.x - 0.2) - 70;
         this.world.cameraPos.y =  70;

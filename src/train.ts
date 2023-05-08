@@ -54,15 +54,15 @@ export class Train{
         drawObject3D(this.gl, programinfo, projectionMatrix, this);
     }
 
-    tick(): void {
+    tick(deltaTime:number): void {
         if (this.position.x - this.world.player.position.x < -100){
             this.dead = true;
             return;
         }
         if(!this.world.player.dead) {
-            this.position.x += this.speed.x;
-            this.position.y += this.speed.y;
-            this.position.z += this.speed.z;
+            this.position.x += this.speed.x*(1+deltaTime);
+            this.position.y += this.speed.y*(1+deltaTime);
+            this.position.z += this.speed.z*(1+deltaTime);
         }
     };
 

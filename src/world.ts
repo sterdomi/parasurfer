@@ -248,7 +248,7 @@ export class World{
         }while(this.speed<=1.25)
     }
 
-    tickall():void{
+    tickall(deltaTime: number):void{
         this.reCreateTrains();
         this.reCreatePolls();
         this.reCreateTracks();
@@ -256,9 +256,9 @@ export class World{
         this.reCreateWalls();
         this.reCreateCrouchers();
 
-        this.player.tick();
+        this.player.tick(deltaTime);
         this.police.tick();
-        this.obstacles.trains.forEach(train=>train.tick());
+        this.obstacles.trains.forEach(train=>train.tick(deltaTime));
         this.tunnels.middletunnels.forEach(mid=>mid.tick());
         this.tracks.forEach(track=>track.tick());
         this.obstacles.crouchers.forEach(c=>c.tick());

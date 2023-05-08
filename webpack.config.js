@@ -92,7 +92,8 @@ module.exports = (env, argv) => {
             new CopyPlugin({
                 patterns: [
                     { from: "src/assets/music", to: "music" },
-                    { from: "src/assets/images/boom.png", to: "images/boom.png" }
+                    { from: "src/assets/images/boom.png", to: "images/boom.png" },
+                    { from: "src/assets/images/parasurf.png", to: "images/parasurf.png" }
                 ],
             }),
         ],

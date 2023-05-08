@@ -33,7 +33,7 @@ export class Tunnel {
         this.buffers = initBuffers(this.gl, this.object);
     }
 
-    tick(data?: any): void | boolean {
+    tick(): void | boolean {
         // noop
     }
 
